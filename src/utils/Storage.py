@@ -1,4 +1,4 @@
-data = {"Twitter": [], "Facebook": [], "Instagram": []}
+data = {"Twitter": [], "Facebook": [], "Instagram": [], "kill": False}
 
 
 class Storage:

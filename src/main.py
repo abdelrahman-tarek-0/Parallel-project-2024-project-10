@@ -13,17 +13,17 @@ frames = {
     "Twitter": {
         "frame": widgets.create_data_frame(app, "Twitter", 0, 0),
         "labels": [],
-        "loading_label": None
+        "loading_label": None,
     },
     "Facebook": {
         "frame": widgets.create_data_frame(app, "Facebook", 0, 1),
         "labels": [],
-        "loading_label": None
+        "loading_label": None,
     },
     "Instagram": {
         "frame": widgets.create_data_frame(app, "Instagram", 1, 0, 2),
         "labels": [],
-        "loading_label": None
+        "loading_label": None,
     },
 }
 
@@ -40,8 +40,6 @@ def onDataFetched(target):
         label = widgets.create_label(frame["frame"], f"{i + 1}. {post}")
         frame["labels"].append(label)
 
-    
-
 def onLoading(target, isLoading):
     frame = frames[target]
     if isLoading:
@@ -57,7 +55,6 @@ def onLoading(target, isLoading):
             frame["loading_label"] = None
 
 
-
 if __name__ == "__main__":
     targets = ["Twitter", "Facebook", "Instagram"]
 
@@ -71,3 +68,5 @@ if __name__ == "__main__":
         thread.start()
 
     app.mainloop()
+    Storage.save("kill", True)
+    exit()
