@@ -2,7 +2,6 @@ import threading
 import time
 
 from utils.Fetcher import Fetcher
-from utils.Storage import Storage
 
 
 def register_refresh_feed(target=None, onLoading=None, onFetch=None, delay=1):
@@ -16,15 +15,7 @@ def register_refresh_feed(target=None, onLoading=None, onFetch=None, delay=1):
 
     while True:
         print("\nRefreshing feed...")
-        if Storage.get("kill") == True:
-            return
 
-        threads = [threading.Thread(target=executer, args=(onLoading, onFetch))]
-
-        # Start and join threads
-        for thread in threads:
-            thread.start()
-        for thread in threads:
-            thread.join()
+        executer(onLoading, onFetch)
 
         time.sleep(delay)
