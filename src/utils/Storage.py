@@ -1,11 +1,11 @@
 data = {"Twitter": [], "Facebook": [], "Instagram": [], "kill": False}
 
 
-class Storage:
+class InMemorySharedStorage:
     @staticmethod
     def save(platform, posts):
         data[platform] = posts
-        return Storage
+        return InMemorySharedStorage
 
     @staticmethod
     def get(platform):

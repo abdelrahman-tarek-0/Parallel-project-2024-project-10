@@ -7,8 +7,8 @@ from ui.multiWindows import start
 import ui.widgets as widgets
 
 
-from utils.ThreadFeed import register_refresh_feed
-from utils.Storage import Storage
+from utils.refresh_feed import register_refresh_feed
+from utils.Storage import InMemorySharedStorage
 
 facebookWindow = CreateWindow(x=50, y=50, width=800, height=400)
 facebookWindow.w.title("Facebook")
@@ -42,7 +42,7 @@ frames = {
 }
 
 def onDataFetched(target):
-    data = Storage.get(target)
+    data = InMemorySharedStorage.get(target)
     print(f"{target} data: {data}")
 
     frame = frames[target]

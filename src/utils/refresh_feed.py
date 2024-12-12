@@ -1,17 +1,17 @@
 import threading
 import time
 
-from utils.Fetcher import Fetcher
+from utils.Fetcher import DataFetcher
 
 
 def register_refresh_feed(target=None, onLoading=None, onFetch=None, delay=1):
     executer = None
     if target == "Twitter":
-        executer = Fetcher.fetch_from_twitter
+        executer = DataFetcher.fetch_from_twitter
     elif target == "Facebook":
-        executer = Fetcher.fetch_from_facebook
+        executer = DataFetcher.fetch_from_facebook
     elif target == "Instagram":
-        executer = Fetcher.fetch_from_instagram
+        executer = DataFetcher.fetch_from_instagram
 
     while True:
         print("\nRefreshing feed...")
