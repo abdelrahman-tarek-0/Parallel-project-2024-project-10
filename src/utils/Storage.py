@@ -10,7 +10,3 @@ class Storage:
     @staticmethod
     def get(platform):
         return data[platform]
-
-    @staticmethod
-    def clear():
-        data = {"Twitter": [], "Facebook": [], "Instagram": []}
