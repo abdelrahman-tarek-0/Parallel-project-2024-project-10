@@ -1,32 +1,45 @@
 import threading
-import customtkinter
+from random import randint
 
-from ui.window import createWindow
+from ui.multiWindows import CreateWindow
+from ui.multiWindows import start
+
 import ui.widgets as widgets
+
 
 from utils.ThreadFeed import register_refresh_feed
 from utils.Storage import Storage
 
+facebookWindow = CreateWindow(x=50, y=50, width=800, height=400)
+facebookWindow.w.title("Facebook")
 
-app = createWindow(800, 800)
+twitterWindow = CreateWindow(x=100, y=50, width=800, height=400)
+twitterWindow.w.title("Twitter")
+
+instagramWindow = CreateWindow(x=150, y=50, width=800, height=400)
+instagramWindow.w.title("Instagram")
+
+# app = createWindow(800, 800)
 frames = {
     "Twitter": {
-        "frame": widgets.create_data_frame(app, "Twitter", 0, 0),
+        "frame": widgets.create_data_frame(twitterWindow.w),
+        "window": twitterWindow,
         "labels": [],
         "loading_label": None,
     },
     "Facebook": {
-        "frame": widgets.create_data_frame(app, "Facebook", 0, 1),
+        "frame": widgets.create_data_frame(facebookWindow.w),
+        "window": facebookWindow,
         "labels": [],
         "loading_label": None,
     },
     "Instagram": {
-        "frame": widgets.create_data_frame(app, "Instagram", 1, 0, 2),
+        "frame": widgets.create_data_frame(instagramWindow.w),
+        "window": instagramWindow,
         "labels": [],
         "loading_label": None,
     },
 }
-
 
 def onDataFetched(target):
     data = Storage.get(target)
@@ -37,6 +50,7 @@ def onDataFetched(target):
         label.destroy()
 
     for i, post in enumerate(data):
+        print(f"{i + 1}. {post}")
         label = widgets.create_label(frame["frame"], f"{i + 1}. {post}")
         frame["labels"].append(label)
 
@@ -60,13 +74,11 @@ if __name__ == "__main__":
 
     threads = [
         threading.Thread(
-            target=register_refresh_feed, args=(target, onLoading, onDataFetched, 5)
+            target=register_refresh_feed, args=(target, onLoading, onDataFetched, randint(1, 3))
         )
         for target in targets
     ]
     for thread in threads:
         thread.start()
 
-    app.mainloop()
-    Storage.save("kill", True)
-    exit()
+    start()
