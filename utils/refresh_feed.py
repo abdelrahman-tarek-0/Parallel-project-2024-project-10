@@ -22,7 +22,6 @@ def register_refresh_feed(
         list_number_of_posts[i] += 1
 
     while True:
-        timeStart = time.time()
         onLoading(source, True)
 
         data = []
@@ -45,8 +44,6 @@ def register_refresh_feed(
         for t in threads:
             t.join()
 
-        timeEnd = time.time()
-        print(f"Fetching data for {source} took {timeEnd - timeStart} seconds")
 
         random.shuffle(data)
 
