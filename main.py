@@ -36,6 +36,7 @@ def onDataFetched(target):
 
         for post in data:
             widgets.create_user_post(frame["frame"], post)
+
     except Exception:
         logging.warning(f"Target: {target} - probably closed window (ignoring)")
 
@@ -69,6 +70,7 @@ if __name__ == "__main__":
             target=register_refresh_feed,
             args=(
                 target,
+                configs["sources"],
                 onLoading,
                 onDataFetched,
                 delay,

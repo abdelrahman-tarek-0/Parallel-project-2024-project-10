@@ -3,7 +3,7 @@ import ui.widgets as widgets
 
 def check_if_file_exists(file):
     try:
-        with open(file, "r") as f:
+        with open(f"./databases/{file}", "r") as f:
             return True
     except:
         return False
@@ -34,8 +34,6 @@ def get_configs():
     frame.configure(bg=widgets.Colors.WINDOW)
 
     sourcesEntries = []
-
-  
 
     def add_source(default=""):
         entry = widgets.crete_entry(frame, default)
@@ -103,7 +101,7 @@ def get_configs():
         data["refreshDelay"] = int(refreshDelay)
         data["numOfThreads"] = int(numOfThreads)
         data["numOfPosts"] = int(numOfPosts)
-        data["sources"] = dbSources
+        data["sources"] =  dbSources
 
         configPage.quit()
         configPage.destroy()
