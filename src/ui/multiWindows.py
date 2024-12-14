@@ -3,6 +3,7 @@ import tkinter as tk
 import threading
 import time
 
+from ui.widgets import Colors
 root = tk.Tk()
 root.withdraw()
 
@@ -14,7 +15,7 @@ class CreateWindow:
         self.w = tk.Toplevel()
 
         self.w.title("Threaded Window")
-        self.w.configure(bg='#25282c')
+        self.w.configure(bg=Colors.WINDOW)
         self.w.grid_columnconfigure(0, weight=1)
         self.w.grid_columnconfigure(1, weight=1)
 
