@@ -1,5 +1,4 @@
 import threading
-from random import randint
 
 from ui.multiWindows import CreateWindow
 from ui.multiWindows import start
@@ -9,33 +8,21 @@ import ui.widgets as widgets
 from utils.refresh_feed import register_refresh_feed
 from utils.Storage import InMemorySharedStorage
 
-facebookWindow = CreateWindow(x=0, y=50, width=600, height=600)
-facebookWindow.w.title("Facebook")
 
-twitterWindow = CreateWindow(x=50, y=50, width=600, height=600)
-twitterWindow.w.title("Twitter")
+frames = {}
+targets = ["Twitter", "Facebook", "Instagram"]
 
-instagramWindow = CreateWindow(x=100, y=50, width=600, height=600)
-instagramWindow.w.title("Instagram")
+for i, target in enumerate(targets):
+    window = CreateWindow(x=i * 100, y=50, width=600, height=600)
 
-
-frames = {
-    "Twitter": {
-        "frame": widgets.create_data_frame(twitterWindow.w),
-        "window": twitterWindow,
+    window.w.title(target)
+    frames[target] = {
+        "frame": widgets.create_data_frame(window.w),
+        "window": window,
         "loading_label": None,
-    },
-    "Facebook": {
-        "frame": widgets.create_data_frame(facebookWindow.w),
-        "window": facebookWindow,
-        "loading_label": None,
-    },
-    "Instagram": {
-        "frame": widgets.create_data_frame(instagramWindow.w),
-        "window": instagramWindow,
-        "loading_label": None,
-    },
-}
+    }
+
+
 
 def onDataFetched(target):
     data = InMemorySharedStorage.get(target)
@@ -46,6 +33,7 @@ def onDataFetched(target):
 
     for post in data:
         widgets.create_user_post(frame["frame"], post)
+
 
 def onLoading(target, isLoading):
     frame = frames[target]
@@ -63,11 +51,11 @@ def onLoading(target, isLoading):
 
 
 if __name__ == "__main__":
-    targets = ["Twitter", "Facebook", "Instagram"]
-    delay = 5 #randint(1, 3)
+    targets = list(frames.keys())
+    delay = 5  # randint(1, 3)
     threads = [
         threading.Thread(
-            target=register_refresh_feed, args=(target, onLoading, onDataFetched,delay )
+            target=register_refresh_feed, args=(target, onLoading, onDataFetched, delay)
         )
         for target in targets
     ]
