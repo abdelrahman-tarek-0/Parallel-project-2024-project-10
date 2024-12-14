@@ -26,6 +26,11 @@ def create_data_frame(app):
 
     return frame
 
+def create_frame(app):
+    frame = tk.Frame(app, bg=Colors.BACKGROUND)
+    frame.pack(pady=10)
+    return frame
+
 
 def create_label(app, text, bg=Colors.BACKGROUND):
     label = tk.Label(app, text=text, font=("Arial", 14), bg=bg, fg=Colors.TEXT)
@@ -35,8 +40,13 @@ def create_label(app, text, bg=Colors.BACKGROUND):
 
 def create_window(width, height):
     window = tk.Tk()
-    window.geometry(f"{width}x{height}")
-    window.eval("tk::PlaceWindow . center")
+
+    screen_width = window.winfo_screenwidth()
+
+    x_position = (screen_width - width) // 2
+    y_position = 100
+    window.geometry(f"{width}x{height}+{x_position}+{y_position}")
+
     window.configure(bg="#25282c")
     return window
 
@@ -93,5 +103,15 @@ def create_user_post(frame, user_data):
         font=("Arial", 12),
     )
     quote_label.pack(anchor="w")
+
+    source_label = tk.Label(
+        text_frame,
+        text=f"Source: {user_data['source']}",
+        bg=Colors.BACKGROUND,
+        fg=Colors.TEXT,
+        font=("Arial", 10),
+    )
+
+    source_label.pack(anchor="w")
 
     return user_frame
