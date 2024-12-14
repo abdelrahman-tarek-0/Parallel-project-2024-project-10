@@ -1,9 +1,17 @@
 import tkinter as tk
 import ui.widgets as widgets
 
+def check_if_file_exists(file):
+    try:
+        with open(file, "r") as f:
+            return True
+    except:
+        return False
+
 def get_configs():
-    configPage = widgets.create_window(300, 400)
+    configPage = widgets.create_window(300, 700)
     configPage.title("Configuration")
+
     errorLabel = None
 
     data = {}
@@ -20,11 +28,60 @@ def get_configs():
     widgets.create_label(configPage, "Number of posts per thread:", bg=widgets.Colors.WINDOW)
     numOfPostsEntry = widgets.crete_entry(configPage, "5")
 
+    widgets.create_label(configPage, "Databases sources (sqlite):", bg=widgets.Colors.WINDOW)
+    frame = widgets.create_frame(configPage)
+    frame.pack(pady=10)
+    frame.configure(bg=widgets.Colors.WINDOW)
+
+    sourcesEntries = []
+
+  
+
+    def add_source(default=""):
+        entry = widgets.crete_entry(frame, default)
+        deleteButton = widgets.create_button(frame, "Delete", lambda: delete_source(entry))
+
+        entry.configure(width=20)
+        deleteButton.configure(width=10)
+
+        entry.pack()
+        deleteButton.pack()
+        
+        sourcesEntries.append((entry, deleteButton))
+
+    add_source("facebook.sqlite3")
+    add_source("twitter.sqlite3")
+
+    def delete_source(entry):
+        for i, (e, b) in enumerate(sourcesEntries):
+            if e == entry:
+                e.destroy()
+                b.destroy()
+                sourcesEntries.pop(i)
+                break
+
+    addSourceButton = widgets.create_button(configPage, "Add source", add_source)
+    addSourceButton.pack(pady=10)
+
+
     def on_confirm():
         numOfThreads = numOfThreadsEntry.get()
         fakeRequestDelay = fakeRequestDelayEntry.get()
         refreshDelay = refreshDelayEntry.get()
         numOfPosts = numOfPostsEntry.get()
+
+        dbSources = []
+        for entry, _ in sourcesEntries:
+            dbSources.append(entry.get())
+
+        if not dbSources:
+            errorLabel.config(text="No sources added")
+            return
+        
+        for source in dbSources:
+            if not check_if_file_exists(source):
+                errorLabel.config(text=f"File {source} does not exist")
+                return
 
         if not numOfThreads or not numOfThreads.isdigit():
             errorLabel.config(text="Invalid number of threads")
@@ -46,6 +103,7 @@ def get_configs():
         data["refreshDelay"] = int(refreshDelay)
         data["numOfThreads"] = int(numOfThreads)
         data["numOfPosts"] = int(numOfPosts)
+        data["sources"] = dbSources
 
         configPage.quit()
         configPage.destroy()
