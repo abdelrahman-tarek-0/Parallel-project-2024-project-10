@@ -1,19 +1,40 @@
 import time
-from random import randint
+import random
 
 from utils.Storage import InMemorySharedStorage
+import sqlite3
 
+db = "db.sqlite3"
+
+
+def get_random_data():
+    con = sqlite3.connect(db)
+    cur = con.cursor()
+    data_list = [a for a in cur.execute("SELECT * FROM users ORDER BY RANDOM() LIMIT 5")]
+
+    data = []
+
+    for d in data_list:
+        data.append({
+            "id": d[0],
+            "name": d[1],
+            "avatar": d[2],
+            "quote": d[3],
+        })
+
+    con.close()
+
+    return data
+  
 
 class DataFetcher:
     @staticmethod
     def _fetch(source, onLoading, onFetched):
         onLoading(source, True)
         time.sleep(2)
-        random = randint(0, 100000)
-        InMemorySharedStorage.save(
-            source,
-            [f"{source} Post 1", f"{source} Post 2", f"{source} Post 3", f"Random: {random}"],
-        )
+    
+        InMemorySharedStorage.save(source, get_random_data())
+        
         onLoading(source, False)
         onFetched(source)
 
