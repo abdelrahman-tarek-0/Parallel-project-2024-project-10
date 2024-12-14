@@ -53,12 +53,22 @@ def onLoading(target, isLoading):
 
 if __name__ == "__main__":
     targets = list(frames.keys())
+    
     delay = configs["refreshDelay"]
     fake_request_delay = configs["delay"]
+    number_of_posts = configs["numOfPosts"]
+
     threads = [
         threading.Thread(
             target=register_refresh_feed,
-            args=(target, onLoading, onDataFetched, delay, fake_request_delay),
+            args=(
+                target,
+                onLoading,
+                onDataFetched,
+                delay,
+                fake_request_delay,
+                number_of_posts,
+            ),
         )
         for target in targets
     ]
