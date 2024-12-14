@@ -7,6 +7,7 @@ from io import BytesIO
 
 def create_button(app, text, command):
     button = tk.Button(app, text=text, command=command)
+    button.configure(bg="#262626", fg="white")
     button.pack(anchor="w", padx=10, pady=10)
     return button
 
@@ -23,6 +24,23 @@ def create_label(app, text, bg="#262626"):
     label.pack(anchor="w", padx=10, pady=5)
     return label
 
+def create_window(width, height):
+    window = tk.Tk()
+    window.geometry(f"{width}x{height}")
+    window.eval('tk::PlaceWindow . center')
+    window.configure(bg='#25282c')
+    return window
+
+def crete_entry(app, default):
+    entry = tk.Entry(app)
+    if default:
+            entry.insert(0, default)
+
+    entry.configure(bg="#262626", fg="white")
+    entry.configure(font=("Arial", 14))
+
+    entry.pack()
+    return entry
 
 def create_user_post(frame, user_data):
     """Creates a user post on the GUI."""
