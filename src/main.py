@@ -2,26 +2,27 @@ import threading
 
 from ui.multiWindows import CreateWindow
 from ui.multiWindows import start
+from ui.configWindow import get_configs
 
 import ui.widgets as widgets
 
 from utils.refresh_feed import register_refresh_feed
 from utils.Storage import InMemorySharedStorage
 
+configs = get_configs()
 
 frames = {}
-targets = ["Twitter", "Facebook", "Instagram"]
 
-for i, target in enumerate(targets):
-    window = CreateWindow(x=i * 100, y=50, width=600, height=600)
 
-    window.w.title(target)
-    frames[target] = {
+for i in range(configs["numOfThreads"]):
+    window = CreateWindow(x=i * 50, y=50, width=600, height=600)
+
+    window.w.title(f"Threaded Window {i + 1}")
+    frames[f"frame_{i}"] = {
         "frame": widgets.create_data_frame(window.w),
         "window": window,
         "loading_label": None,
     }
-
 
 
 def onDataFetched(target):
@@ -52,10 +53,12 @@ def onLoading(target, isLoading):
 
 if __name__ == "__main__":
     targets = list(frames.keys())
-    delay = 5  # randint(1, 3)
+    delay = configs["refreshDelay"]
+    fake_request_delay = configs["delay"]
     threads = [
         threading.Thread(
-            target=register_refresh_feed, args=(target, onLoading, onDataFetched, delay)
+            target=register_refresh_feed,
+            args=(target, onLoading, onDataFetched, delay, fake_request_delay),
         )
         for target in targets
     ]

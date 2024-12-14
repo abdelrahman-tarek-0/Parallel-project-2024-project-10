@@ -29,9 +29,9 @@ def get_random_data():
 
 class DataFetcher:
     @staticmethod
-    def fetch(source, onLoading, onFetched):
+    def fetch(source, onLoading, onFetched, fake_delay=2):
         onLoading(source, True)
-        time.sleep(2)
+        time.sleep(fake_delay)
     
         InMemorySharedStorage.save(source, get_random_data())
         
