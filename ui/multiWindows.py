@@ -31,8 +31,6 @@ class CreateWindow:
         self.w.destroy()
         CreateWindow.open_windows -= 1
 
-        print(CreateWindow.open_windows)
-
         if CreateWindow.open_windows <= 0:
             root.destroy()
 

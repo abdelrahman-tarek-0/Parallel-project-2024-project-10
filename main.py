@@ -1,4 +1,5 @@
 import threading
+import logging
 
 from ui.multiWindows import CreateWindow
 from ui.multiWindows import start
@@ -26,30 +27,35 @@ for i in range(configs["numOfThreads"]):
 
 
 def onDataFetched(target):
-    data = InMemorySharedStorage.get(target)
-    frame = frames[target]
+    try:
+        data = InMemorySharedStorage.get(target)
+        frame = frames[target]
 
-    for widget in frame["frame"].winfo_children():
-        widget.destroy()
-
-    for post in data:
-        widgets.create_user_post(frame["frame"], post)
-
-
-def onLoading(target, isLoading):
-    frame = frames[target]
-    if isLoading:
         for widget in frame["frame"].winfo_children():
             widget.destroy()
 
-        if frame["loading_label"] is None:
-            frame["loading_label"] = widgets.create_label(frame["frame"], "Loading...")
+        for post in data:
+            widgets.create_user_post(frame["frame"], post)
+    except Exception:
+        logging.warning(f"Target: {target} - probably closed window (ignoring)")
 
-    else:
-        if frame["loading_label"] is not None:
-            frame["loading_label"].destroy()
-            frame["loading_label"] = None
 
+def onLoading(target, isLoading):
+    try:
+        frame = frames[target]
+        if isLoading:
+            for widget in frame["frame"].winfo_children():
+                widget.destroy()
+
+            if frame["loading_label"] is None:
+                frame["loading_label"] = widgets.create_label(frame["frame"], "Loading...")
+
+        else:
+            if frame["loading_label"] is not None:
+                frame["loading_label"].destroy()
+                frame["loading_label"] = None
+    except Exception:
+        logging.warning(f"Target: {target} - probably closed window (ignoring)")
 
 if __name__ == "__main__":
     targets = list(frames.keys())

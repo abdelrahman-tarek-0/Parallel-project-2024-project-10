@@ -1,9 +1,6 @@
 import tkinter as tk
 import ui.widgets as widgets
 
-
-
-
 def get_configs():
     configPage = widgets.create_window(300, 400)
     configPage.title("Configuration")

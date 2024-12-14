@@ -1,5 +1,4 @@
-data = {"Twitter": [], "Facebook": [], "Instagram": [], "kill": False}
-
+data = {} # this will be shared with all the threads
 
 class InMemorySharedStorage:
     @staticmethod
