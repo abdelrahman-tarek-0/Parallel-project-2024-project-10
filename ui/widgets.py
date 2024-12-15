@@ -37,6 +37,12 @@ def create_label(app, text, bg=Colors.BACKGROUND):
     label.pack(anchor="w", padx=10, pady=5)
     return label
 
+def create_checkbox(app):
+    variable = tk.IntVar()
+    check = tk.Checkbutton(app, variable=variable, bg=Colors.BACKGROUND, fg="black")
+    check.pack(anchor="w", padx=10, pady=5)
+    return variable, check
+
 
 def create_window(width, height):
     window = tk.Tk()

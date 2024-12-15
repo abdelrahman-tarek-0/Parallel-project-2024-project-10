@@ -28,6 +28,10 @@ def get_configs():
     widgets.create_label(configPage, "Number of posts per thread:", bg=widgets.Colors.WINDOW)
     numOfPostsEntry = widgets.crete_entry(configPage, "5")
 
+    widgets.create_label(configPage, "Use multi threading to fetch data:", bg=widgets.Colors.WINDOW)
+    variable, check = widgets.create_checkbox(configPage)
+    variable.set(1)
+
     widgets.create_label(configPage, "Databases sources (sqlite):", bg=widgets.Colors.WINDOW)
     frame = widgets.create_frame(configPage)
     frame.pack(pady=10)
@@ -67,6 +71,7 @@ def get_configs():
         fakeRequestDelay = fakeRequestDelayEntry.get()
         refreshDelay = refreshDelayEntry.get()
         numOfPosts = numOfPostsEntry.get()
+        isMultiThreading = variable.get()
 
         dbSources = []
         for entry, _ in sourcesEntries:
@@ -102,6 +107,7 @@ def get_configs():
         data["numOfThreads"] = int(numOfThreads)
         data["numOfPosts"] = int(numOfPosts)
         data["sources"] =  dbSources
+        data["multiThreading"] = isMultiThreading
 
         configPage.quit()
         configPage.destroy()
@@ -120,3 +126,6 @@ def get_configs():
         exit()
 
     return data
+
+if __name__ == "__main__":
+    print(get_configs())

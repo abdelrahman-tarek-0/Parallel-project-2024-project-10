@@ -64,6 +64,7 @@ if __name__ == "__main__":
     delay = configs["refreshDelay"]
     fake_request_delay = configs["delay"]
     number_of_posts = configs["numOfPosts"]
+    is_multi_threading = configs["multiThreading"]
 
     threads = [
         threading.Thread(
@@ -76,6 +77,7 @@ if __name__ == "__main__":
                 delay,
                 fake_request_delay,
                 number_of_posts,
+                is_multi_threading,
             ),
         )
         for target in targets
